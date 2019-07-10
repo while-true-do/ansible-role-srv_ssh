@@ -14,13 +14,9 @@ wtd_srv_ssh_conf_banner: ""
 # You can specify addtional configuration.
 wtd_srv_ssh_conf:
   Port: "22"
-# You can define a banner [builtin|<path>], where "builtin" will use the
-# template from this role.
+  # You can define a banner [builtin|<path>], where "builtin" will use the
+  # template from this role.
   Banner: "builtin"
-# key: "value"
-# key: "value"
-# Defining the banner this way will use the banner template, which is the
-# default behavior.
 
 ## Service Management
 wtd_srv_ssh_service: "sshd"
