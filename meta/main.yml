@@ -1,0 +1,36 @@
+---
+# meta file for while_true_do.srv_ssh
+
+galaxy_info:
+  role_name: srv_ssh
+  author: while-true-do.io
+  description: An Ansible to install and configure the ssh server.
+  license: BSD
+
+  min_ansible_version: 2.7
+
+  # Supported platforms: https://galaxy.ansible.com/api/v1/platforms/
+  # Please also maintain
+  # - molecule/default/molecule.yml
+  # - molecule/default/tests/*
+  # - .travis.yml
+  platforms:
+    - name: EL
+      versions:
+        - 7
+
+    - name: Fedora
+      versions:
+        - 29
+        - 30
+
+  # Some very common tags are:
+  # system, virtualization, development, monitoring, packaging, container
+  # configuration, cloud, security
+  galaxy_tags:
+    - ssh
+    - system
+    - configuration
+    - security
+
+dependencies: []

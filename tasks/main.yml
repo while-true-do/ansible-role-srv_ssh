@@ -1,0 +1,102 @@
+---
+# tasks file for while_true_do.srv_ssh
+
+- name: Gather package facts
+  package_facts:
+    manager: auto
+  when:
+    - wtd_srv_ssh_fw_mgmt|bool
+  tags:
+    - cockpit
+    - facts
+    - package
+
+- name: Manage ssh Packages
+  package:
+    name: "{{ wtd_srv_ssh_package }}"
+    state: "{{ wtd_srv_ssh_package_state }}"
+  become: true
+  tags:
+    - ssh
+    - sshd
+    - package
+
+- name: Manage ssh Service
+  service:
+    name: "{{ wtd_srv_ssh_service }}"
+    state: "{{ wtd_srv_ssh_service_state }}"
+    enabled: true
+  become: true
+  when:
+    - wtd_srv_ssh_package_state != "absent"
+  tags:
+    - ssh
+    - sshd
+    - service
+
+- name: Manage ssh Banner
+  template:
+    src: "banner.j2"
+    dest: "/etc/ssh/sshd-banner"
+    owner: "root"
+    group: "root"
+    mode: 0600
+  become: true
+  when:
+    - wtd_srv_ssh_package_state != "absent"
+    - wtd_srv_ssh_conf.Banner == "builtin"
+  tags:
+    - ssh
+    - sshd
+    - configuration
+
+- name: Manage ssh Configuration
+  template:
+    src: "sshd_config.conf.j2"
+    dest: "/etc/ssh/sshd_config"
+    owner: "root"
+    group: "root"
+    mode: 0600
+    validate: "/usr/sbin/sshd -t -f %s"
+  become: true
+  notify:
+    - Setfact sshd Port
+    - Restart sshd
+  when:
+    - wtd_srv_ssh_package_state != "absent"
+  tags:
+    - ssh
+    - sshd
+    - configuration
+
+- name: Manage ssh SELinux Port
+  seport:
+    ports: "{{ wtd_srv_ssh_conf.Port }}"
+    proto: "tcp"
+    setype: "ssh_port_t"
+    state: "present"
+  become: true
+  when:
+    - ansible_selinux.status == "enabled"
+    - wtd_srv_ssh_package_state != "absent"
+  tags:
+    - ssh
+    - sshd
+    - selinux
+    - security
+
+- name: Manage ssh FW Port
+  firewalld:
+    port: "{{ wtd_srv_ssh_fw_port }}"
+    state: "{{ wtd_srv_ssh_fw_state }}"
+    zone: "{{ wtd_srv_ssh_fw_zone }}"
+  become: true
+  when:
+    - '"firewalld" in packages'
+    - wtd_srv_ssh_conf.Port is defined
+    - wtd_srv_ssh_fw_mgmt|bool
+  tags:
+    - ssh
+    - sshd
+    - security
+    - firewall

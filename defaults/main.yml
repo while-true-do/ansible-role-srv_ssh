@@ -1,0 +1,37 @@
+---
+# defaults file for while_true_do.srv_ssh
+
+## Package Management
+wtd_srv_ssh_package: "openssh-server"
+# State can be present|latest|absent
+wtd_srv_ssh_package_state: "present"
+
+## Configuration Management
+# Specify the banner file
+wtd_srv_ssh_conf_banner: ""
+# Per default some Compliance Standards are applied. You can review them in the
+# README.md or the templates.
+# You can specify addtional configuration.
+wtd_srv_ssh_conf:
+  Port: "22"
+# You can define a banner [builtin|<path>], where "builtin" will use the
+# template from this role.
+  Banner: "builtin"
+# key: "value"
+# key: "value"
+# Defining the banner this way will use the banner template, which is the
+# default behavior.
+
+## Service Management
+wtd_srv_ssh_service: "sshd"
+# State can be started|stopped
+wtd_srv_ssh_service_state: "started"
+wtd_srv_ssh_service_enabled: true
+
+## Firewalld Management
+wtd_srv_ssh_fw_mgmt: true
+wtd_srv_ssh_fw_port: "{{ wtd_srv_ssh_conf.Port }}/tcp"
+# State can be enabled|disabled
+wtd_srv_ssh_fw_state: "enabled"
+# Zone can be according to defined zones on your machine.
+wtd_srv_ssh_fw_zone: "public"

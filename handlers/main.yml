@@ -1,0 +1,16 @@
+---
+# handlers file for while_true_do.srv_ssh
+
+- name: Restart sshd
+  service:
+    name: "{{ wtd_srv_ssh_service }}"
+    state: "restarted"
+  become: true
+  tags:
+    - ssh
+    - sshd
+    - service
+
+- name: Setfact sshd Port
+  set_fact:
+    ansible_port: "{{ wtd_srv_ssh_conf.Port }}"

@@ -1,0 +1,167 @@
+{{ ansible_managed|comment }}
+
+## Connection
+
+Port {{ wtd_srv_ssh_conf.Port|default('22') }}
+Protocol {{ wtd_srv_ssh_conf.Protocol|default('2') }}
+{% if wtd_srv_ssh_conf.AddressFamily is defined %}
+AddressFamily {{ wtd_srv_ssh_conf.AddressFamily|default('any') }}
+{% endif %}
+{%if wtd_srv_ssh_conf.ListenAddresses is defined %}
+{% for ListenAddress in wtd_srv_ssh_conf.ListenAddresses %}
+ListenAddress {{ ListenAddress }}
+{% endfor %}
+{% endif %}
+
+{% if wtd_srv_ssh_conf.HostKeys is defined %}
+{% for HostKey in wtd_srv_ssh_conf.HostKeys %}
+HostKey {{ HostKey }}
+{% endfor %}
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+{% endif %}
+
+## Logging
+
+SyslogFacility {{ wtd_srv_ssh_conf.SyslogFacility|default('AUTHPRIV') }}
+LogLevel {{ wtd_srv_ssh_conf.LogLevel|default('INFO') }}
+
+## Ciphers and Keying
+
+RekeyLimit {{ wtd_srv_ssh_conf.RekeyLimit|default('default none') }}
+Ciphers {{ wtd_srv_ssh_conf.Ciphers|default('aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc') }}
+MACs {{ wtd_srv_ssh_conf.MACs|default('hmac-sha2-512,hmac-sha2-256,hmac-sha1') }}
+
+## Authentication
+
+# Root Login
+PermitRootLogin {{ wtd_srv_ssh_conf.PermitRootLogin|default('no') }}
+StrictModes {{ wtd_srv_ssh_conf.StrictModes|default('yes') }}
+
+# Public Key Login
+PubkeyAuthentication {{ wtd_srv_ssh_conf.PubkeyAuthentication|default('yes') }}
+AuthorizedKeysFile {{ wtd_srv_ssh_conf.AuthorizedKeysFile|default('.ssh/authorized_keys') }}
+AuthorizedPrincipalsFile {{ wtd_srv_ssh_conf.AuthorizedPrincipalsFile|default('none') }}
+{% if wtd_srv_ssh_conf.AuthorizedKeysCommand is defined %}
+AuthorizedKeysCommand {{ wtd_srv_ssh_conf.AuthorizedKeysCommand }}
+{% endif %}
+{% if wtd_srv_ssh_conf.AuthorizedKeysCommandUser is defined %}
+AuthorizedKeysCommandUser {{ wtd_srv_ssh_conf.AuthorizedKeysCommandUser }}
+{% endif %}
+
+# Password Login
+PasswordAuthentication {{ wtd_srv_ssh_conf.PasswordAuthentication|default('yes') }}
+PermitEmptyPasswords {{ wtd_srv_ssh_conf.PermitEmptyPasswords|default('no') }}
+
+# Challenge Response
+ChallengeResponseAuthentication {{ wtd_srv_ssh_conf.ChallengeResponseAuthentication|default('no') }}
+
+# Limit Auth Retries and Sessions
+LoginGraceTime {{ wtd_srv_ssh_conf.LoginGraceTime|default('120') }}
+ClientAliveInterval {{ wtd_srv_ssh_conf.ClientAliveInterval|default('300') }}
+ClientAliveCountMax {{ wtd_srv_ssh_conf.ClientAliveCountMax|default('0') }}
+MaxAuthTries {{ wtd_srv_ssh_conf.MaxAuthTries|default('3') }}
+MaxStartups {{ wtd_srv_ssh_conf.MaxStartups|default('10:30:100') }}
+MaxSessions {{wtd_srv_ssh_conf.MaxSessions|default('2') }}
+Compression {{ wtd_srv_ssh_conf.Compression|default('delayed') }}
+UsePrivilegeSeparation {{ wtd_srv_ssh_conf.UsePrivilegeSeparation|default('yes') }}
+TCPKeepAlive {{ wtd_srv_ssh_conf.TCPKeepAlive|default('yes')}}
+
+# Kerberos Options
+KerberosAuthentication {{ wtd_srv_ssh_conf.KerberosAuthentication|default('no') }}
+{% if wtd_srv_ssh_conf.KerberosOrLocalPasswd is defined %}
+KerberosOrLocalPasswd {{ wtd_srv_ssh_conf.KerberosOrLocalPasswd }}
+{% endif %}
+{% if wtd_srv_ssh_conf.KerberosTicketCleanup is defined %}
+KerberosTicketCleanup {{ wtd_srv_ssh_conf.KerberosTicketCleanup }}
+{% endif %}
+{% if wtd_srv_ssh_conf.KerberosGetAFSToken is defined %}
+KerberosGetAFSToken {{ wtd_srv_ssh_conf.KerberosGetAFSToken }}
+{% endif %}
+{% if wtd_srv_ssh_conf.KerberosUseKuserok is defined %}
+KerberosUseKuserok {{ wtd_srv_ssh_conf.KerberosUseKuserok }}
+{% endif %}
+
+# GSSAPI Options
+GSSAPIAuthentication {{ wtd_srv_ssh_conf.GSSAPIAuthentication|default('no') }}
+{% if wtd_srv_ssh_conf.GSSAPICleanupCredentials is defined %}
+GSSAPICleanupCredentials {{ wtd_srv_ssh_conf.GSSAPICleanupCredentials }}
+{% endif %}
+{% if wtd_srv_ssh_conf.GSSAPIStrictAcceptorCheck is defined %}
+GSSAPIStrictAcceptorCheck {{ wtd_srv_ssh_conf.GSSAPIStrictAcceptorCheck }}
+{% endif %}
+{% if wtd_srv_ssh_conf.GSSAPIKeyExchange is defined %}
+GSSAPIKeyExchange {{ wtd_srv_ssh_conf.GSSAPIKeyExchange }}
+{% endif %}
+{% if wtd_srv_ssh_conf.GSSAPIEnablek5users is defined %}
+GSSAPIEnablek5users {{ wtd_srv_ssh_conf.GSSAPIEnablek5users }}
+{% endif %}
+
+# Hostbased Authentication
+HostbasedAuthentication {{ wtd_srv_ssh_conf.HostbasedAuthentication|default('no') }}
+{% if wtd_srv_ssh_conf.IgnoreUserKnownHosts is defined %}
+IgnoreUserKnownHosts {{ wtd_srv_ssh_conf.IgnoreUserKnownHosts }}
+{% endif %}
+IgnoreRhosts {{ wtd_srv_ssh_conf.IgnoreRhosts|default('yes') }}
+
+# PAM Authentication
+UsePAM {{ wtd_srv_ssh_conf.UsePAM|default('yes') }}
+
+## Forwarding
+
+{% if wtd_srv_ssh_conf.AllowAgentForwarding is defined %}
+AllowAgentForwarding {{ wtd_srv_ssh_conf.AllowAgentForwarding }}
+{% endif %}
+{% if wtd_srv_ssh_conf.AllowTcpForwarding is defined %}
+AllowTcpForwarding
+{% endif %}
+
+# X11
+X11Forwarding {{ wtd_srv_ssh_conf.X11Forwarding|default('yes') }}
+{% if wtd_srv_ssh_conf.X11DisplayOffset is defined %}
+X11DisplayOffset {{ wtd_srv_ssh_conf.X11DisplayOffset }}
+{% endif %}
+{% if wtd_srv_ssh_conf.X11UseLocalhost is defined %}
+X11UseLocalhost {{ wtd_srv_ssh_conf.X11UseLocalhost }}
+{% endif %}
+
+GatewayPorts {{ wtd_srv_ssh_conf.GatewayPorts|default('no') }}
+{% if wtd_srv_ssh_conf.UseLogin is defined %}
+UseLogin {{ wtd_srv_ssh_conf.UseLogin }}
+{% endif %}
+UseDNS {{ wtd_srv_ssh_conf.UseDNS|default('yes') }}
+{% if wtd_srv_ssh_conf.PidFile is defined %}
+PidFile {{ wtd_srv_ssh_conf.PidFile }}
+{% endif %}
+PermitTunnel {{ wtd_srv_ssh_conf.PermitTunnel|default('no') }}
+{% if wtd_srv_ssh_conf.ChrootDirectory is defined %}
+ChrootDirectory {{ wtd_srv_ssh_conf.ChrootDirectory }}
+{% endif %}
+
+## Information
+{% if wtd_srv_ssh_conf.Banner is defined %}
+{% if wtd_srv_ssh_conf.Banner == "builtin" %}
+Banner /etc/ssh/sshd-banner
+{% else %}
+Banner {{ wtd_srv_ssh_conf.Banner }}
+{% endif %}
+{% else %}
+Banner none
+{% endif %}
+{% if wtd_srv_ssh_conf.ShowPatchLevel is defined %}
+ShowPatchLevel {{ wtd_srv_ssh_conf.ShowPatchLevel }}
+{% endif %}
+PrintMotd {{ wtd_srv_ssh_conf.PrintMotd|default('yes') }}
+PrintLastLog {{ wtd_srv_ssh_conf.PrintLastLog|default('yes') }}
+
+## Environment
+PermitUserEnvironment {{ wtd_srv_ssh_conf.PermitUserEnvironment|default('no') }}
+
+# Accept locale-related environment variables
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+
+Subsystem sftp /usr/libexec/openssh/sftp-server
