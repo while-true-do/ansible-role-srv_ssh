@@ -24,9 +24,9 @@ An Ansible to install and configure the ssh server.
 
 ## Motivation
 
-The [Openssh Server]() is the default access to almost all \*nix systems.
-Having a role, that installs and configures this core service is mandatory
-for most operators.
+The [Openssh Server](https://www.openssh.com/) is the default access to almost
+all \*nix systems. Having a role, that installs and configures this core service
+is mandatory for most operators.
 
 ## Description
 
