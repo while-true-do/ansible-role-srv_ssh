@@ -9,8 +9,18 @@
   tags:
     - ssh
     - sshd
+    - compliance
+    - security
     - service
+    - system
 
 - name: Setfact sshd Port
   set_fact:
     ansible_port: "{{ wtd_srv_ssh_conf.Port }}"
+  tags:
+    - ssh
+    - sshd
+    - compliance
+    - security
+    - service
+    - system

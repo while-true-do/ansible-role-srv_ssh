@@ -29,8 +29,12 @@ galaxy_info:
   # configuration, cloud, security
   galaxy_tags:
     - ssh
-    - system
+    - sshd
+    - compliance
     - configuration
     - security
+    - server
+    - service
+    - system
 
 dependencies: []
