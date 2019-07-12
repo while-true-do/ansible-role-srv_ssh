@@ -7,9 +7,13 @@
   when:
     - wtd_srv_ssh_fw_mgmt|bool
   tags:
-    - cockpit
+    - ssh
+    - sshd
+    - compliance
     - facts
     - package
+    - security
+    - system
 
 - name: Manage ssh Packages
   package:
@@ -19,7 +23,9 @@
   tags:
     - ssh
     - sshd
+    - compliance
     - package
+    - security
 
 - name: Manage ssh Service
   service:
@@ -32,6 +38,8 @@
   tags:
     - ssh
     - sshd
+    - compliance
+    - security
     - service
 
 - name: Manage ssh Banner
@@ -48,7 +56,10 @@
   tags:
     - ssh
     - sshd
+    - compliance
     - configuration
+    - security
+    - system
 
 - name: Manage ssh Configuration
   template:
@@ -67,7 +78,10 @@
   tags:
     - ssh
     - sshd
+    - compliance
     - configuration
+    - security
+    - system
 
 - name: Manage ssh SELinux Port
   seport:
@@ -82,8 +96,10 @@
   tags:
     - ssh
     - sshd
+    - compliance
     - selinux
     - security
+    - system
 
 - name: Manage ssh FW Port
   firewalld:
@@ -98,5 +114,7 @@
   tags:
     - ssh
     - sshd
-    - security
+    - compliance
     - firewall
+    - security
+    - system
