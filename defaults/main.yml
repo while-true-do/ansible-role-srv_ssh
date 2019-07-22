@@ -16,7 +16,7 @@ wtd_srv_ssh_conf:
   Port: "22"
   # You can define a banner [builtin|<path>], where "builtin" will use the
   # template from this role.
-  Banner: "builtin"
+  # Banner: "builtin"
 
 ## Service Management
 wtd_srv_ssh_service: "sshd"

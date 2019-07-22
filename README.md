@@ -124,15 +124,16 @@ can be done in a
 
 #### Advanced
 
-Configure another ssh port and disable password login.
+Configure another ssh port, disable password login and use the builtin banner.
 
 ```
 - hosts: all
   roles:
     - role: while_true_do.srv_ssh
-      wtd_srv_ssh_conf.Port: "19022"
-      wtd_srv_ssh_conf.PasswordAuthentication: "no"
-
+      wtd_srv_ssh_conf:
+        Port: "19022"
+        PasswordAuthentication: "no"
+        Banner: "builtin"
 ```
 
 ## Known Issues

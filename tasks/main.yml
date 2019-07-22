@@ -52,6 +52,7 @@
   become: true
   when:
     - wtd_srv_ssh_package_state != "absent"
+    - wtd_srv_ssh_conf.Banner is defined
     - wtd_srv_ssh_conf.Banner == "builtin"
   tags:
     - ssh
@@ -106,6 +107,8 @@
     port: "{{ wtd_srv_ssh_fw_port }}"
     state: "{{ wtd_srv_ssh_fw_state }}"
     zone: "{{ wtd_srv_ssh_fw_zone }}"
+    permanent: true
+    immediate: true
   become: true
   when:
     - '"firewalld" in packages'
